@@ -1,0 +1,37 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { howItWorks } from '../config/site';
+---
+
+<section id="cara-kerja" class="maroon-surface section overflow-hidden" aria-labelledby="cara-kerja-title">
+  <div class="container-page">
+    <SectionHeading id="cara-kerja-title" eyebrow={howItWorks.eyebrow} title={howItWorks.title} tone="light" />
+
+    <ol class="relative mx-auto mt-14 grid max-w-md gap-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
+      {
+        howItWorks.steps.map((step, i) => (
+          <li class="relative flex gap-5 pb-10 last:pb-0 lg:flex-col lg:gap-4 lg:pb-0">
+            {i < howItWorks.steps.length - 1 && (
+              <span aria-hidden="true" class="absolute left-[1.375rem] top-12 bottom-1 w-px bg-champagne/30 lg:hidden" />
+            )}
+            <span
+              class:list={[
+                'relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-lg',
+                step.soon
+                  ? 'border border-dashed border-champagne/60 text-champagne'
+                  : 'border border-gold/70 bg-maroon-deep text-champagne shadow-[0_0_0_6px_rgb(94_20_20/0.6)]',
+              ]}
+            >
+              {i + 1}
+            </span>
+            <div class:list={['pt-1.5 lg:pt-0', step.soon && 'opacity-90']}>
+              {step.soon && <span class="badge-soon mb-2">Segera Hadir</span>}
+              <h3 class="text-[1.25rem] leading-snug text-ivory">{step.title}</h3>
+              <p class="mt-2 text-[0.88rem] leading-relaxed text-ivory/75">{step.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { finalCta } from '../config/site';
+import { florals, ornaments } from '../assets';
+import { waLink } from '../lib/whatsapp';
+---
+
+<section id="konsultasi" class="maroon-surface section overflow-hidden" aria-labelledby="cta-title">
+  <Image
+    src={florals.topLeft}
+    alt=""
+    width={280}
+    class="floral -left-16 -top-10 w-[190px] opacity-25 sm:w-[280px]"
+    loading="lazy"
+    aria-hidden="true"
+  />
+  <Image
+    src={florals.bottomRight}
+    alt=""
+    width={260}
+    class="floral -bottom-16 -right-14 w-[180px] opacity-25 sm:w-[260px]"
+    loading="lazy"
+    aria-hidden="true"
+  />
+  <div class="container-page text-center">
+    <div class="mx-auto max-w-2xl">
+      <h2 id="cta-title" class="text-[2.1rem] leading-[1.15] text-ivory sm:text-[2.9rem]">{finalCta.title}</h2>
+      <Image src={ornaments.dividerAlt} alt="" width={220} class="mx-auto mt-6 h-auto w-[190px]" loading="lazy" aria-hidden="true" />
+      <p class="mx-auto mt-6 max-w-xl text-[1rem] leading-relaxed text-ivory/85">{finalCta.copy}</p>
+      <a href={waLink()} target="_blank" rel="noopener" class="btn btn-gold mt-9">
+        <Icon name="whatsapp" class="h-4 w-4" />
+        {finalCta.cta}
+      </a>
+    </div>
+  </div>
+</section>

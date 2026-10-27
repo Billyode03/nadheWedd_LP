@@ -1,0 +1,121 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+import { packages } from '../config/site';
+import { waPackageLink } from '../lib/whatsapp';
+---
+
+<section id="paket" class="paper section" aria-labelledby="paket-title">
+  <div class="container-page">
+    <SectionHeading id="paket-title" eyebrow={packages.eyebrow} title={packages.title} intro={packages.intro} />
+
+    <ul class="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4 xl:items-stretch xl:gap-5">
+      {
+        packages.items.map((p) => (
+          <li
+            class:list={[
+              'relative flex flex-col rounded-[1.75rem] p-7',
+              p.featured
+                ? 'maroon-surface z-10 shadow-[0_34px_60px_-30px_rgb(94_20_20/0.95)] ring-1 ring-gold/60 xl:-my-5 xl:py-11'
+                : 'frame-inset',
+            ]}
+          >
+            {p.badge && (
+              <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-champagne px-4 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-maroon-deep shadow-[0_8px_16px_-10px_rgb(0_0_0/0.6)]">
+                {p.badge}
+              </span>
+            )}
+
+            <h3 class:list={['text-[1.6rem] leading-snug', p.featured ? 'text-ivory' : 'text-maroon']}>{p.name}</h3>
+
+            <p class="mt-4 flex flex-wrap items-baseline gap-x-2">
+              <span
+                class:list={[
+                  'text-[1.85rem] font-medium leading-none tracking-tight tabular-nums',
+                  p.featured ? 'text-ivory' : 'text-maroon',
+                ]}
+              >
+                {p.price}
+              </span>
+              <span class:list={['text-[0.8rem]', p.featured ? 'text-ivory/75' : 'text-warm-gray']}>
+                {packages.priceUnit}
+              </span>
+            </p>
+            {p.savings && (
+              <span
+                class:list={[
+                  'mt-3 self-start rounded-full px-3 py-1 text-[0.72rem] font-medium tabular-nums',
+                  p.featured ? 'bg-champagne/15 text-champagne' : 'bg-champagne/40 text-gold-deep',
+                ]}
+              >
+                {p.savings}
+              </span>
+            )}
+
+            <div class:list={['mt-6 flex-1 border-t pt-6', p.featured ? 'border-champagne/25' : 'border-gold/25']}>
+              {p.includes && (
+                <p class:list={['mb-3 text-[0.85rem] font-medium', p.featured ? 'text-champagne' : 'text-gold-deep']}>
+                  {p.includes}, plus:
+                </p>
+              )}
+              <ul class="space-y-2.5 text-[0.88rem] leading-snug">
+                {p.items.map((item) => (
+                  <li class:list={['flex gap-2.5', p.featured ? 'text-ivory/90' : 'text-ink/85']}>
+                    <Icon
+                      name="check"
+                      class:list={['mt-0.5 h-4 w-4 shrink-0', p.featured ? 'text-champagne' : 'text-gold-deep']}
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <a
+              href={waPackageLink(p.name)}
+              target="_blank"
+              rel="noopener"
+              class:list={['btn mt-8 w-full', p.featured ? 'btn-gold' : 'btn-primary']}
+            >
+              <Icon name="whatsapp" class="h-4 w-4" />
+              {packages.ctaLabel}
+              <span class="sr-only">: {p.name}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mx-auto mt-14 grid max-w-5xl gap-6 md:grid-cols-2">
+      {
+        [packages.single, packages.addons].map((group) => (
+          <div class="frame-inset rounded-[1.5rem] p-6 sm:p-7">
+            <h3 class="text-[1.3rem] text-maroon">{group.title}</h3>
+            <dl class="mt-4 divide-y divide-gold/20 text-[0.88rem]">
+              {group.items.map((row) => (
+                <div class="flex items-baseline justify-between gap-4 py-2.5">
+                  <dt class="text-ink/85">{row.name}</dt>
+                  <dd class="shrink-0 text-right font-medium tabular-nums text-maroon">{row.price}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mx-auto mt-8 max-w-5xl">
+      <p class="eyebrow text-gold-deep">Catatan</p>
+      <ul class="mt-3 grid gap-x-8 gap-y-2 text-[0.8rem] leading-relaxed text-warm-gray md:grid-cols-2">
+        {
+          packages.notes.map((n) => (
+            <li class="flex gap-2.5">
+              <span aria-hidden="true" class="mt-[0.55rem] h-1 w-1 shrink-0 rounded-full bg-gold-deep" />
+              <span>{n}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

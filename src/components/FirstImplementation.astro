@@ -1,0 +1,69 @@
+---
+import { Image, Picture } from 'astro:assets';
+import DeviceFrame from './DeviceFrame.astro';
+import { firstImplementation as fi } from '../config/site';
+import { couple, ornaments } from '../assets';
+
+const copy = fi.status === 'done' && fi.copyAfter ? fi.copyAfter : fi.copyBefore;
+const [phone, laptop] = fi.screenshots;
+---
+
+<section id="implementasi-perdana" class="maroon-surface section overflow-hidden" aria-labelledby="implementasi-title">
+  <div class="container-page grid items-center gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+    <div class="text-center lg:text-left">
+      <p class="eyebrow text-champagne">{fi.eyebrow}</p>
+      <Image
+        src={couple.monogram}
+        alt=""
+        width={70}
+        class="mx-auto mt-6 h-auto w-[56px] opacity-90 lg:mx-0"
+        loading="lazy"
+        aria-hidden="true"
+      />
+      <h2 id="implementasi-title" class="mt-5 text-[2.1rem] leading-tight text-ivory sm:text-[2.75rem]">
+        <span class="block font-script text-[1.9rem] leading-none text-champagne sm:text-[2.3rem]">The Wedding of</span>
+        <span class="mt-2 block">Naubill &amp; Dhea</span>
+      </h2>
+      <p class="eyebrow mt-4 text-champagne">{fi.date}</p>
+      <Image
+        src={ornaments.dividerSmall}
+        alt=""
+        width={200}
+        class="mx-auto mt-6 h-auto w-[170px] opacity-90 lg:mx-0"
+        loading="lazy"
+        aria-hidden="true"
+      />
+      <p class="mx-auto mt-6 max-w-md text-[1rem] leading-relaxed text-ivory/85 lg:mx-0">{copy}</p>
+    </div>
+
+    <div class="relative mx-auto aspect-[6/5] w-full max-w-[34rem]">
+      <div class="absolute left-1/2 top-0 w-[50%] -translate-x-1/2">
+        <div class="absolute inset-x-[-12%] bottom-[8%] top-[18%] -z-10 rounded-full bg-ivory/10 blur-2xl" aria-hidden="true"></div>
+        <Picture
+          src={fi.illustration.src}
+          alt={fi.illustration.alt}
+          widths={[260, 390]}
+          sizes="(min-width: 640px) 270px, 50vw"
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          class="h-auto w-full drop-shadow-[0_24px_30px_rgb(0_0_0/0.35)]"
+          loading="lazy"
+        />
+      </div>
+      <DeviceFrame
+        src={laptop.src}
+        alt={laptop.alt}
+        device="laptop"
+        sizes="(min-width: 1024px) 330px, 56vw"
+        class="absolute bottom-[2%] right-0 w-[58%]"
+      />
+      <DeviceFrame
+        src={phone.src}
+        alt={phone.alt}
+        device="phone"
+        sizes="(min-width: 1024px) 150px, 26vw"
+        class="absolute bottom-0 left-[2%] w-[25%] rotate-[-4deg]"
+      />
+    </div>
+  </div>
+</section>

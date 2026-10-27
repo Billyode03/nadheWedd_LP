@@ -1,0 +1,209 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import DeviceFrame from './DeviceFrame.astro';
+import Icon from './Icon.astro';
+import { showcase, demoUrls, productOverview, whatsapp } from '../config/site';
+import { waLink } from '../lib/whatsapp';
+
+const productName = (id: string) => productOverview.products.find((p) => p.id === id)?.name ?? id;
+---
+
+<section id="demo" class="paper section" aria-labelledby="demo-title">
+  <div class="container-page">
+    <SectionHeading id="demo-title" eyebrow={showcase.eyebrow} title={showcase.title} intro={showcase.intro} />
+
+    <div data-tabs class="mt-12">
+      <div
+        role="tablist"
+        aria-label="Pilih produk"
+        class="mx-auto flex w-fit max-w-full gap-1 rounded-full border border-gold/35 bg-ivory/80 p-1"
+      >
+        {
+          showcase.tabs.map((tab, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-${tab.id}`}
+              aria-controls={`panel-${tab.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              class="inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-[0.82rem] font-medium text-ink/75 transition-colors hover:text-maroon aria-selected:bg-maroon aria-selected:text-ivory sm:px-6"
+            >
+              {tab.label}
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        showcase.tabs.map((tab, i) => {
+          const demoUrl = tab.demo ? demoUrls[tab.demo] : '';
+          return (
+            <div
+              role="tabpanel"
+              id={`panel-${tab.id}`}
+              aria-labelledby={`tab-${tab.id}`}
+              tabindex="0"
+              hidden={i !== 0}
+              class="mt-10 focus-visible:outline-offset-8"
+            >
+                <div class="grid items-center gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
+                  <div class="relative min-w-0" data-carousel>
+                    <div class="snap-strip" data-track tabindex="-1" aria-label={`Tampilan ${tab.label}`}>
+                      {tab.slides.map((slide) => (
+                        <figure
+                          class:list={[
+                            'flex flex-col items-center',
+                            slide.device === 'phone' ? 'w-[58vw] max-w-[230px] sm:w-[230px]' : 'w-[86vw] max-w-[520px] sm:w-[520px]',
+                          ]}
+                        >
+                          <DeviceFrame
+                            src={slide.src}
+                            alt={slide.alt}
+                            device={slide.device}
+                            sizes={slide.device === 'phone' ? '230px' : '(min-width: 640px) 520px, 86vw'}
+                            class="w-full"
+                          />
+                          <figcaption class="mt-4 text-center text-[0.78rem] tracking-wide text-warm-gray">
+                            {slide.caption}
+                          </figcaption>
+                        </figure>
+                      ))}
+                    </div>
+                    <div class="mt-2 flex items-center justify-center gap-3">
+                      <button
+                        type="button"
+                        data-prev
+                        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold/40 text-maroon hover:bg-ivory disabled:opacity-35"
+                        aria-label="Tampilan sebelumnya"
+                      >
+                        <Icon name="prev" class="h-5 w-5" />
+                      </button>
+                      <span class="min-w-[3.5rem] text-center text-[0.75rem] tabular-nums text-warm-gray" data-count aria-live="polite">
+                        1 / {tab.slides.length}
+                      </span>
+                      <button
+                        type="button"
+                        data-next
+                        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold/40 text-maroon hover:bg-ivory disabled:opacity-35"
+                        aria-label="Tampilan berikutnya"
+                      >
+                        <Icon name="next" class="h-5 w-5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 class="text-[1.9rem] leading-tight text-maroon sm:text-[2.2rem]">{tab.title}</h3>
+                    <p class="mt-4 text-[0.95rem] leading-relaxed text-warm-gray">{tab.text}</p>
+                    <ul class="mt-6 space-y-3 text-[0.9rem] text-ink/85">
+                      {tab.highlights.map((h) => (
+                        <li class="flex gap-3">
+                          <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {tab.chips && (
+                      <div class="mt-6">
+                        <p class="eyebrow text-gold-deep">{tab.chips.title}</p>
+                        <ul class="mt-3 flex flex-wrap gap-2 text-[0.75rem] text-ink/80">
+                          {tab.chips.items.map((c) => (
+                            <li class="rounded-full border border-gold/40 bg-ivory/80 px-3 py-1.5">{c}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <div class="mt-8">
+                      {demoUrl ? (
+                        <a href={demoUrl} target="_blank" rel="noopener" class="btn btn-primary">
+                          {tab.demoLabel}
+                          <Icon name="external" class="h-4 w-4" />
+                        </a>
+                      ) : (
+                        <a
+                          href={waLink(whatsapp.demoMessage(productName(tab.id)))}
+                          target="_blank"
+                          rel="noopener"
+                          class="btn btn-outline"
+                        >
+                          <Icon name="whatsapp" class="h-4 w-4" />
+                          Minta demo via WhatsApp
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Tabs (WAI-ARIA tabs pattern, automatic activation).
+  const root = document.querySelector<HTMLElement>('[data-tabs]')!;
+  const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+  const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')!)!);
+
+  function select(index: number, focus = false) {
+    tabs.forEach((t, i) => {
+      const active = i === index;
+      t.setAttribute('aria-selected', String(active));
+      t.tabIndex = active ? 0 : -1;
+      panels[i].hidden = !active;
+    });
+    if (focus) tabs[index].focus();
+    panels[index].querySelector<HTMLElement>('[data-carousel]')?.dispatchEvent(new Event('refresh'));
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(i));
+    tab.addEventListener('keydown', (e) => {
+      const last = tabs.length - 1;
+      const next = { ArrowRight: i === last ? 0 : i + 1, ArrowLeft: i === 0 ? last : i - 1, Home: 0, End: last }[e.key];
+      if (next === undefined) return;
+      e.preventDefault();
+      select(next, true);
+    });
+  });
+
+  // Swipeable screenshot strips with prev/next buttons.
+  root.querySelectorAll<HTMLElement>('[data-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>('[data-track]')!;
+    const slides = [...track.children] as HTMLElement[];
+    const prev = carousel.querySelector<HTMLButtonElement>('[data-prev]')!;
+    const next = carousel.querySelector<HTMLButtonElement>('[data-next]')!;
+    const count = carousel.querySelector<HTMLElement>('[data-count]')!;
+
+    const offset = (s: HTMLElement) => s.offsetLeft - slides[0].offsetLeft;
+    const currentIndex = () => {
+      let best = 0;
+      slides.forEach((s, i) => {
+        if (Math.abs(offset(s) - track.scrollLeft) < Math.abs(offset(slides[best]) - track.scrollLeft)) best = i;
+      });
+      return best;
+    };
+    const update = () => {
+      const atStart = track.scrollLeft <= 2;
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      prev.disabled = atStart;
+      next.disabled = atEnd;
+      count.textContent = `${atEnd ? slides.length : currentIndex() + 1} / ${slides.length}`;
+    };
+    const go = (dir: number) => {
+      const i = Math.min(slides.length - 1, Math.max(0, currentIndex() + dir));
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      track.scrollTo({ left: offset(slides[i]), behavior: reduce ? 'auto' : 'smooth' });
+    };
+
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
+    track.addEventListener('scroll', update, { passive: true });
+    carousel.addEventListener('refresh', update);
+    addEventListener('resize', update);
+    update();
+  });
+</script>

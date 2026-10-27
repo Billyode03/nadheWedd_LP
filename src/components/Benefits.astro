@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+import { benefits } from '../config/site';
+import { florals } from '../assets';
+---
+
+<section id="keunggulan" class="paper-sand section overflow-hidden" aria-labelledby="keunggulan-title">
+  <Image
+    src={florals.bottomRight}
+    alt=""
+    width={280}
+    class="floral -bottom-16 -right-16 w-[200px] opacity-30 sm:w-[280px]"
+    loading="lazy"
+    aria-hidden="true"
+  />
+  <div class="container-page">
+    <SectionHeading id="keunggulan-title" eyebrow={benefits.eyebrow} title={benefits.title} />
+
+    <ul class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      {
+        benefits.items.map((b) => (
+          <li class="frame-inset rounded-[1.5rem] p-6 sm:p-7">
+            <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-maroon text-champagne">
+              <Icon name={b.icon} class="h-[1.35rem] w-[1.35rem]" />
+            </span>
+            <h3 class="mt-5 text-[1.3rem] leading-snug text-maroon">{b.title}</h3>
+            <p class="mt-2 text-[0.88rem] leading-relaxed text-warm-gray">{b.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

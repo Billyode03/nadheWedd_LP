@@ -1,0 +1,27 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+import { faq } from '../config/site';
+---
+
+<section id="faq" class="paper-sand section" aria-labelledby="faq-title">
+  <div class="container-page">
+    <SectionHeading id="faq-title" eyebrow={faq.eyebrow} title={faq.title} />
+
+    <div class="mx-auto mt-12 max-w-3xl divide-y divide-gold/25 border-y border-gold/25">
+      {
+        faq.items.map((item) => (
+          <details class="group" name="faq">
+            <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-6 py-5 text-left font-display text-[1.12rem] leading-snug text-maroon marker:hidden [&::-webkit-details-marker]:hidden">
+              {item.q}
+              <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/40 text-gold-deep transition-transform duration-300 group-open:rotate-180">
+                <Icon name="chevron" class="h-4 w-4" />
+              </span>
+            </summary>
+            <p class="pb-6 pr-4 text-[0.92rem] leading-relaxed text-warm-gray sm:pr-14">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

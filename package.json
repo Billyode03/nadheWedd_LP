@@ -1,0 +1,28 @@
+{
+  "name": "nadhewedd-landing",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "og": "node scripts/make-og.mjs",
+    "qa": "node scripts/qa-layout.mjs . && node scripts/qa-interact.mjs",
+    "mockups": "node scripts/make-mockups.mjs"
+  },
+  "dependencies": {
+    "@fontsource/allura": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.4.0",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "playwright": "^1.64.1",
+    "typescript": "^6.0.3"
+  }
+}

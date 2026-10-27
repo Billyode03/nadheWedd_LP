@@ -1,0 +1,79 @@
+/*
+ * NadheWedd brand tokens — taken from the live invitation (src/index.css of the
+ * NadheWedd invitation repo). Tailwind CSS v4: put this in the landing page's main
+ * CSS after `@import 'tailwindcss';` so classes like bg-maroon, text-gold-deep,
+ * font-display, font-script work exactly as in the invitation.
+ *
+ * Fonts (Google Fonts):
+ * https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Poppins:wght@400;500;600&display=swap
+ *
+ * Proportion used by the invitation: 60% ivory/cream · 25% maroon · 10% gold/champagne · 5% floral.
+ */
+@theme {
+  --color-maroon: #7a1b1b;
+  --color-maroon-deep: #5e1414;
+  --color-maroon-soft: #ab4545;
+  --color-gold: #d4af37;
+  /* Darker antique gold for small text on cream (WCAG AA). */
+  --color-gold-deep: #8a6a22;
+  --color-champagne: #ebd3a1;
+  --color-cream: #fff7eb;
+  --color-ivory: #fffbf4;
+  --color-sand: #f6ecdc;
+  --color-beige: #eadcc6;
+  --color-warm-gray: #7a6d60;
+  --color-ink: #4a2925;
+  --color-rose: #c98b86;
+
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-script: 'Allura', 'Snell Roundhand', 'Apple Chancery', cursive;
+
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Reusable surfaces from the invitation */
+@layer components {
+  /* Small uppercase label above headings. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+
+  /* Subtle paper feel: warm cream with soft light pools, no visible gradient banding. */
+  .paper {
+    background-color: var(--color-cream);
+    background-image: radial-gradient(100% 45% at 50% 0%, rgb(255 253 248 / 0.72), transparent 72%);
+  }
+
+  .paper-sand {
+    background-color: var(--color-cream);
+    background-image: radial-gradient(100% 42% at 50% 100%, rgb(234 220 198 / 0.38), transparent 75%);
+  }
+  .maroon-surface {
+    background-color: var(--color-maroon);
+    background-image:
+      radial-gradient(90% 60% at 50% 0%, rgb(171 69 69 / 0.28), transparent 70%),
+      radial-gradient(80% 50% at 50% 100%, rgb(60 8 8 / 0.35), transparent 70%);
+    color: var(--color-ivory);
+  }
+  .frame-inset {
+    position: relative;
+    border: 1px solid rgb(212 175 55 / 0.42);
+    background: rgb(255 251 244 / 0.68);
+    box-shadow: 0 16px 32px -28px rgb(74 41 37 / 0.42);
+  }
+  .frame-inset::after {
+    pointer-events: none;
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgb(212 175 55 / 0.2);
+  }
+
+}

@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import { ornaments } from '../assets';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  tone?: 'dark' | 'light';
+  align?: 'center' | 'left';
+  id?: string;
+}
+const { eyebrow, title, intro, tone = 'dark', align = 'center', id } = Astro.props;
+const light = tone === 'light';
+---
+
+<div class:list={['max-w-2xl', align === 'center' ? 'mx-auto text-center' : 'text-left']}>
+  {eyebrow && <p class:list={['eyebrow', light ? 'text-champagne' : 'text-gold-deep']}>{eyebrow}</p>}
+  <h2
+    id={id}
+    class:list={[
+      'mt-3 text-[2rem] leading-[1.15] sm:text-[2.5rem] lg:text-[2.75rem]',
+      light ? 'text-ivory' : 'text-maroon',
+    ]}
+  >
+    {title}
+  </h2>
+  <Image
+    src={ornaments.divider}
+    alt=""
+    width={220}
+    class:list={['mt-5 h-auto w-[180px] opacity-90 sm:w-[220px]', align === 'center' && 'mx-auto']}
+    loading="lazy"
+    aria-hidden="true"
+  />
+  {
+    intro && (
+      <p class:list={['mt-5 text-[0.95rem] leading-relaxed', light ? 'text-ivory/80' : 'text-warm-gray']}>{intro}</p>
+    )
+  }
+</div>

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+.env
+.env.*
+
+# Private: kept on disk, never published (public repo)
+# Live-invitation QR (points to the real invitation)
+kit/assets/brand/qr-checkin-buku-tamu.png
+# Shows the venue's full address
+kit/screenshots/03-undangan-acara-mobile.png

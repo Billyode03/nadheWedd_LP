@@ -1,0 +1,19 @@
+---
+interface Props {
+  tone?: 'dark' | 'light';
+  class?: string;
+}
+const { tone = 'dark', class: className = '' } = Astro.props;
+---
+
+<span class:list={['inline-flex flex-col leading-none', className]}>
+  <span class:list={['font-display text-[1.45rem] tracking-[0.01em]', tone === 'dark' ? 'text-maroon' : 'text-ivory']}
+    >Nadhe<span class="italic">Wedd</span></span
+  >{' '}
+  <span
+    class:list={[
+      'mt-1 font-sans text-[0.58rem] font-medium uppercase tracking-[0.3em]',
+      tone === 'dark' ? 'text-gold-deep' : 'text-champagne',
+    ]}>by NadheStudio</span
+  >
+</span>

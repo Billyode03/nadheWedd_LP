@@ -1,0 +1,52 @@
+---
+import Wordmark from './Wordmark.astro';
+import Icon from './Icon.astro';
+import { brand, footerNav, whatsapp } from '../config/site';
+import { waLink } from '../lib/whatsapp';
+---
+
+<footer class="on-maroon bg-maroon-deep text-ivory/80">
+  <div class="container-page grid gap-10 py-14 md:grid-cols-[1.2fr_1fr_1fr]">
+    <div>
+      <Wordmark tone="light" />
+      <p class="eyebrow mt-4 text-champagne">{brand.tagline}</p>
+      <p class="mt-4 max-w-xs text-[0.88rem] leading-relaxed text-ivory/70">{brand.coreMessage}</p>
+    </div>
+
+    <nav aria-label="Navigasi footer">
+      <p class="eyebrow text-champagne">Jelajahi</p>
+      <ul class="mt-3 grid grid-cols-2 gap-x-6 text-[0.9rem]">
+        {
+          footerNav.map((item) => (
+            <li>
+              <a href={item.href} class="inline-flex min-h-11 items-center hover:text-champagne">{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div>
+      <p class="eyebrow text-champagne">Hubungi Kami</p>
+      <ul class="mt-3 text-[0.9rem]">
+        <li>
+          <a href={waLink()} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-2 hover:text-champagne">
+            <Icon name="whatsapp" class="h-4 w-4" />
+            WhatsApp {whatsapp.display}
+          </a>
+        </li>
+        <li>
+          <a href={brand.parentUrl} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-2 hover:text-champagne">
+            <Icon name="external" class="h-4 w-4" />
+            {brand.parent}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-champagne/15">
+    <p class="container-page py-6 text-center text-[0.75rem] text-ivory/60 md:text-left">
+      © {new Date().getFullYear()} NadheWedd by NadheStudio
+    </p>
+  </div>
+</footer>

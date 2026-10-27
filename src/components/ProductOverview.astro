@@ -1,0 +1,141 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from './SectionHeading.astro';
+import DeviceFrame from './DeviceFrame.astro';
+import Icon from './Icon.astro';
+import { productOverview } from '../config/site';
+import { florals } from '../assets';
+
+const [undangan, bukuTamu, album] = productOverview.products;
+---
+
+<section id="fitur" class="paper-sand section" aria-labelledby="fitur-title">
+  <Image
+    src={florals.topLeft}
+    alt=""
+    width={300}
+    class="floral -left-20 -top-12 w-[200px] opacity-30 sm:w-[300px]"
+    loading="lazy"
+    aria-hidden="true"
+  />
+
+  <div class="container-page">
+    <SectionHeading
+      id="fitur-title"
+      eyebrow={productOverview.eyebrow}
+      title={productOverview.title}
+      intro={productOverview.intro}
+    />
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-2 lg:gap-8">
+      {
+        [undangan, bukuTamu].map((p) => (
+          <article class="frame-inset flex flex-col rounded-[1.75rem] p-6 sm:p-8">
+            <div class="relative mb-8 aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-gradient-to-b from-sand to-beige/70">
+              {p.id === 'undangan' ? (
+                <>
+                  <DeviceFrame
+                    src={p.images[1].src}
+                    alt={p.images[1].alt}
+                    device="phone"
+                    sizes="(min-width: 1024px) 140px, 28vw"
+                    class="absolute left-[9%] top-[20%] w-[27%] rotate-[-6deg]"
+                  />
+                  <DeviceFrame
+                    src={p.images[2].src}
+                    alt={p.images[2].alt}
+                    device="phone"
+                    sizes="(min-width: 1024px) 140px, 28vw"
+                    class="absolute right-[9%] top-[20%] w-[27%] rotate-[6deg]"
+                  />
+                  <DeviceFrame
+                    src={p.images[0].src}
+                    alt={p.images[0].alt}
+                    device="phone"
+                    sizes="(min-width: 1024px) 170px, 33vw"
+                    class="absolute left-1/2 top-[9%] z-10 w-[32%] -translate-x-1/2"
+                  />
+                </>
+              ) : (
+                <>
+                  <DeviceFrame
+                    src={p.images[1].src}
+                    alt={p.images[1].alt}
+                    device="laptop"
+                    sizes="(min-width: 1024px) 300px, 60vw"
+                    class="absolute right-[7%] top-[9%] w-[60%]"
+                  />
+                  <DeviceFrame
+                    src={p.images[0].src}
+                    alt={p.images[0].alt}
+                    device="laptop"
+                    sizes="(min-width: 1024px) 330px, 66vw"
+                    class="absolute bottom-[12%] left-[7%] z-10 w-[64%]"
+                  />
+                  <DeviceFrame
+                    src={p.images[2].src}
+                    alt={p.images[2].alt}
+                    device="phone"
+                    sizes="(min-width: 1024px) 110px, 22vw"
+                    class="absolute -bottom-[6%] right-[9%] z-20 w-[19%]"
+                  />
+                </>
+              )}
+            </div>
+
+            <h3 class="text-[1.65rem] text-maroon">{p.name}</h3>
+            <p class="mt-2 font-display text-[1.05rem] italic leading-snug text-gold-deep">{p.benefit}</p>
+            <ul class="mt-6 grid gap-x-6 gap-y-3 text-[0.9rem] leading-snug text-ink/85 sm:grid-cols-2">
+              {p.features.map((f) => (
+                <li class="flex gap-2.5">
+                  <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" />
+                  <span>{f}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+
+      <article class="frame-inset grid items-center gap-8 rounded-[1.75rem] p-6 sm:p-8 lg:col-span-2 lg:grid-cols-2 lg:gap-12">
+        <div class="relative aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-gradient-to-b from-sand to-beige/70">
+          <DeviceFrame
+            src={album.images[1].src}
+            alt={album.images[1].alt}
+            sizes="(min-width: 1024px) 140px, 28vw"
+            device="phone"
+            class="absolute left-[9%] top-[20%] w-[27%] rotate-[-6deg]"
+          />
+          <DeviceFrame
+            src={album.images[2].src}
+            alt={album.images[2].alt}
+            sizes="(min-width: 1024px) 140px, 28vw"
+            device="phone"
+            class="absolute right-[9%] top-[20%] w-[27%] rotate-[6deg]"
+          />
+          <DeviceFrame
+            src={album.images[0].src}
+            alt={album.images[0].alt}
+            sizes="(min-width: 1024px) 170px, 33vw"
+            device="phone"
+            class="absolute left-1/2 top-[9%] z-10 w-[32%] -translate-x-1/2"
+          />
+        </div>
+        <div>
+          <h3 class="text-[1.65rem] text-maroon">{album.name}</h3>
+          <p class="mt-2 font-display text-[1.05rem] italic leading-snug text-gold-deep">{album.benefit}</p>
+          <ul class="mt-6 grid gap-x-6 gap-y-3 text-[0.9rem] leading-snug text-ink/85 sm:grid-cols-2">
+            {
+              album.features.map((f) => (
+                <li class="flex gap-2.5">
+                  <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-gold-deep" />
+                  <span>{f}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

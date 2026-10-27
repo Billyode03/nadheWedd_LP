@@ -1,0 +1,140 @@
+---
+import Wordmark from './Wordmark.astro';
+import Icon from './Icon.astro';
+import { nav } from '../config/site';
+import { waLink } from '../lib/whatsapp';
+---
+
+<header
+  id="navbar"
+  class="sticky top-0 z-50 border-b border-transparent bg-cream/90 backdrop-blur-md transition-[border-color,box-shadow] duration-300 data-[scrolled]:border-gold/25 data-[scrolled]:shadow-[0_10px_30px_-24px_rgb(74_41_37/0.6)]"
+>
+  <nav class="container-page flex h-[4.25rem] items-center justify-between gap-4" aria-label="Navigasi utama">
+    <a href="#beranda" class="-my-2 py-2">
+      <Wordmark />
+      <span class="sr-only">— Beranda</span>
+    </a>
+
+    <ul class="hidden items-center gap-1 lg:flex">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              data-nav-link
+              class="relative inline-flex min-h-11 items-center px-3.5 text-[0.82rem] text-ink/80 transition-colors hover:text-maroon aria-[current=true]:text-maroon after:absolute after:inset-x-3.5 after:bottom-2 after:h-px after:origin-center after:scale-x-0 after:bg-gold-deep after:transition-transform aria-[current=true]:after:scale-x-100"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={waLink()}
+        target="_blank"
+        rel="noopener"
+        class="btn btn-primary hidden !px-5 sm:inline-flex"
+      >
+        <Icon name="whatsapp" class="h-4 w-4" />
+        Konsultasi Gratis
+      </a>
+      <button
+        type="button"
+        id="menu-toggle"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full text-maroon hover:bg-beige/50 lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="sr-only" data-label>Buka menu</span>
+        <Icon name="menu" class="h-6 w-6" data-icon-open />
+        <Icon name="close" class="hidden h-6 w-6" data-icon-close />
+      </button>
+    </div>
+  </nav>
+
+  <div
+    id="mobile-menu"
+    hidden
+    class="border-t border-gold/25 bg-ivory shadow-[0_24px_40px_-30px_rgb(74_41_37/0.7)] lg:hidden"
+  >
+    <ul class="container-page flex flex-col py-3">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              data-nav-link
+              class="flex min-h-12 items-center border-b border-beige/70 font-display text-lg text-ink aria-[current=true]:text-maroon"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="pb-2 pt-4">
+        <a href={waLink()} target="_blank" rel="noopener" class="btn btn-primary w-full">
+          <Icon name="whatsapp" class="h-4 w-4" />
+          Konsultasi Gratis
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('navbar')!;
+  const toggle = document.getElementById('menu-toggle') as HTMLButtonElement;
+  const menu = document.getElementById('mobile-menu')!;
+  const label = toggle.querySelector('[data-label]')!;
+  const iconOpen = toggle.querySelector('[data-icon-open]')!;
+  const iconClose = toggle.querySelector('[data-icon-close]')!;
+
+  function setOpen(open: boolean, returnFocus = false) {
+    toggle.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+    label.textContent = open ? 'Tutup menu' : 'Buka menu';
+    iconOpen.classList.toggle('hidden', open);
+    iconClose.classList.toggle('hidden', !open);
+    if (!open && returnFocus) toggle.focus();
+  }
+
+  toggle.addEventListener('click', () => setOpen(menu.hidden === true));
+  menu.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) setOpen(false, true);
+  });
+  document.addEventListener('click', (e) => {
+    if (!menu.hidden && !header.contains(e.target as Node)) setOpen(false);
+  });
+  matchMedia('(min-width: 1024px)').addEventListener('change', (e) => e.matches && setOpen(false));
+
+  // Border/shadow once the page is scrolled.
+  const onScroll = () => header.toggleAttribute('data-scrolled', scrollY > 8);
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Active-section highlight.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+  const ids = [...new Set(links.map((a) => a.hash.slice(1)))];
+  const sections = ids.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+  const visible = new Map<string, number>();
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) visible.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
+      let current = '';
+      for (const s of sections) if ((visible.get(s.id) ?? 0) > 0) { current = s.id; break; }
+      for (const a of links) {
+        if (a.hash === `#${current}`) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      }
+    },
+    { rootMargin: '-35% 0px -55% 0px', threshold: [0, 0.01] },
+  );
+  sections.forEach((s) => observer.observe(s));
+</script>
